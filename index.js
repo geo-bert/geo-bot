@@ -15,11 +15,12 @@ var allowed = [
 ];
 
 bot.on('message', msg =>{
-    for(let i = 0; i < allowed.length; i++){
-        if(msg.content.includes(allowed[i])){
-            console.log(msg.content + " is apparently in allowed, allowed by: " + allowed[i]);
-            return;
-        }
+    if(
+        msg.content.includes("youtube.com/watch") ||
+        msg.content.includes("youtu.be") ||
+        msg.content.includes("redd.it") ||
+        msg.content.includes("imgur.com")){
+        return;
     }
     msg.suppressEmbeds(true);
 });
