@@ -4,6 +4,7 @@ const token = 'NzIyMTMzNDE5MTE0NjI3MjAz.XueqlQ.h-4pt4Kbk2voAt_5k0MXwUyQaH8';
 
 bot.on('ready', () =>{
     console.log('This bot is online!');
+    bot.user.setActivity('over link previews', {type: 'WATCHING'});
 });
 
 var allowed = [
@@ -23,5 +24,4 @@ bot.on('message', msg =>{
     msg.suppressEmbeds(true);
 });
 
-bot.user.setActivity('the screams of the removed link previews', { type: 'LISTENING' });
 bot.login(token);
