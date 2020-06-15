@@ -23,5 +23,5 @@ bot.on('message', msg =>{
     msg.suppressEmbeds(true);
 });
 
-bot.login(token);
 bot.user.setActivity('the screams of the removed link previews', { type: 'LISTENING' });
+bot.login(token);
