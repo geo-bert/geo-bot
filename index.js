@@ -6,6 +6,8 @@ bot.on('ready', () =>{
     console.log('This bot is online!');
 });
 
+bot.user.setActivity('the screams of the removed link previews', { type: 'LISTENING' });
+
 var allowed = [
     "youtube.com/watch",
     "youtu.be",
