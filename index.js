@@ -24,18 +24,15 @@ bot.on('message', msg =>{
 });
 
 bot.on('ready', () =>{
-    bot.channels.cache.get('303288155124269056').send('noob');
-});
-
-bot.on('message', msg =>{
     function scheduledMessage(){
-        bot.channels.cache.get('303288155124269056').send('noob');
+        bot.channels.cache.get('303288155124269056').send('noob')
+            .then(sentMessage => {
+                sentMessage.delete()
+            })
+            .catch(console.error);
     }
 
-    if(msg.author.equals(bot.user)){
-        msg.delete();
-        setTimeout(scheduledMessage, 300000);
-    }
+    setInterval(scheduledMessage, 300000);
 });
 
 bot.login(token);
