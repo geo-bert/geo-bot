@@ -34,9 +34,8 @@ bot.on('message', msg =>{
 
     if(msg.author.equals(bot.user)){
         msg.delete();
+        setTimeout(scheduledMessage, 300000);
     }
-
-    setTimeout(scheduledMessage, 300000);
 });
 
 bot.login(token);
