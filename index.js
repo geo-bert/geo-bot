@@ -8,8 +8,8 @@ bot.on('ready', () => {
 });
 
 bot.on('message', msg => {
-    if (msg.channel == "547000766779490304") {
-        msg.suppressEmbeds(true).then().catch(console.error).finally(console.log("Oops something went wrong"));
+    if (msg.channel == "547000766779490304" || msg.channel == "784923413663580160") {
+        msg.suppressEmbeds(true).then().catch(console.error);
     }
 });
 
