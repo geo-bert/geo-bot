@@ -14,7 +14,7 @@ bot.on('ready', () => {
     bot.user.setActivity('over link previews', { type: 'WATCHING' });
 });
 
-bot.on('message', msg => {
+bot.on('message', async msg => {
     if (msg.channel == "547000766779490304") {
         await msg.suppressEmbeds(true).then().catch(console.error);
     }
