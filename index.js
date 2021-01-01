@@ -16,7 +16,7 @@ bot.on('ready', () => {
 
 bot.on('message', msg => {
     if (msg.channel == "547000766779490304") {
-        msg.suppressEmbeds(true).then().catch(console.error);
+        await msg.suppressEmbeds(true).then().catch(console.error);
     }
     
     if (msg.channel == "784923413663580160") {
@@ -25,7 +25,7 @@ bot.on('message', msg => {
                 return;
             }
         }
-        msg.suppressEmbeds(true).then().catch(console.error);
+        await msg.suppressEmbeds(true).then().catch(console.error);
     }
 });
 
