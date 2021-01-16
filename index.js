@@ -6,6 +6,8 @@ const trusted_general = "784923413663580160";
 const admin_role = "143709645213663232";
 const owner = "143703794306383872";
 
+bot.login("NzIyMTMzNDE5MTE0NjI3MjAz.XuepJw.xJl73SmUfVsG0JmofhU71y25LFI");
+
 const allowed = [
     "youtube.com/watch",
     "youtu.be",
@@ -37,5 +39,3 @@ bot.on('message', msg => {
         msg.suppressEmbeds(true).catch(err => console.error(err));
     }
 });
-
-bot.login("NzIyMTMzNDE5MTE0NjI3MjAz.XuepJw.xJl73SmUfVsG0JmofhU71y25LFI");
