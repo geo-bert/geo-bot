@@ -1,12 +1,10 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-require("dotenv").config();
 
-const general = process.env.GENERAL;
-const trusted_general = process.env.TRUSTEDGENERAL;
-const admin_role = process.env.ADMINROLE;
-const owner = process.env.OWNER;
-const date = new Date();
+const general = "547000766779490304";
+const trusted_general = "784923413663580160";
+const admin_role = "143709645213663232";
+const owner = "143703794306383872";
 
 const allowed = [
     "youtube.com/watch",
@@ -17,7 +15,7 @@ const allowed = [
 
 bot.on('ready', () => {
     bot.user.setActivity('over link previews', { type: 'WATCHING' });
-    console.log(`This bot is online! ${date}`);
+    console.log(`This bot is online! ${new Date()}`);
 });
 
 bot.on('message', msg => {
@@ -40,4 +38,4 @@ bot.on('message', msg => {
     }
 });
 
-bot.login(process.env.TOKEN);
+bot.login("NzIyMTMzNDE5MTE0NjI3MjAz.XuepJw.xJl73SmUfVsG0JmofhU71y25LFI");
