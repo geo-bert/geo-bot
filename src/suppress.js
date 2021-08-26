@@ -1,4 +1,4 @@
-import config from "../config_dev.json";
+import config from "../config.json";
 
 export default function checkForSuppression(msg) {
   if (!msg.embeds.length) return;
