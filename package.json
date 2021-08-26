@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node --experimental-json-modules index.js"
   },
   "author": "Geobert",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.2.0"
+    "discord.js": "^13.1.0"
   }
 }

@@ -1,41 +1,16 @@
-const Discord = require('discord.js');
-const bot = new Discord.Client();
+import { Client, Intents } from "discord.js";
+import token from "./secrets.json";
+import checkForSuppression from "./src/suppress.js";
 
-const general = "547000766779490304";
-const trusted_general = "784923413663580160";
-const admin_role = "143709645213663232";
-const owner = "143703794306383872";
-
-bot.login("NzIyMTMzNDE5MTE0NjI3MjAz.XuepJw.xJl73SmUfVsG0JmofhU71y25LFI");
-
-const allowed = [
-    "youtube.com/watch",
-    "youtu.be",
-    "redd.it",
-    "imgur.com"
-];
-
-bot.on('ready', () => {
-    bot.user.setActivity('over link previews', { type: 'WATCHING' });
-    console.log(`This bot is online! ${new Date()}`);
+const client = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
-bot.on('message', msg => {
-    if(!msg.member.roles.cache.find(r => r.id === admin_role) && !msg.member.id === owner){
-        return;
-    }
-
-    if (msg.channel == general) {
-        msg.suppressEmbeds(true).catch(err => console.error(err));
-        return;
-    }
-
-    if (msg.channel == trusted_general) {
-        for (let i = 0; i < allowed.length; i++) {
-            if (msg.content.includes(allowed[i])) {
-                return;
-            }
-        }
-        msg.suppressEmbeds(true).catch(err => console.error(err));
-    }
+client.once("ready", () => {
+  client.user.setActivity("the fiddle like an Irish man", { type: "PLAYING" });
+  console.log(`This bot is online! ${new Date()}`);
 });
+
+client.on("messageCreate", (msg) => checkForSuppression(msg));
+
+client.login(token);
