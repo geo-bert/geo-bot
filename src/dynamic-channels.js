@@ -20,7 +20,7 @@ function connected(newState) {
 
   if (
     channel.members.size === 1 &&
-    channel.parentId === config.dynamic_category_id
+    channel.parentId === config.dynamic_category
   ) {
     for (const c of category.children) if (c[1].members.size === 0) return;
 
@@ -43,7 +43,7 @@ function disconnected(oldState) {
   if (
     category.children.size > 1 &&
     channel.members.size == 0 &&
-    channel.parentId === config.dynamic_category_id
+    channel.parentId === config.dynamic_category
   )
     channel.delete();
 }
