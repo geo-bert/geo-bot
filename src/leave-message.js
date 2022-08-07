@@ -1,4 +1,4 @@
-import config from "../config.json";
+import config from "../config.json" assert { type: "json" };
 
 export default function onLeave(client, member) {
   const channel = client.guilds.cache

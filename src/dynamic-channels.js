@@ -1,4 +1,4 @@
-import config from "../config.json";
+import config from "../config.json" assert { type: "json" };
 
 export default function updateChannel(oldState, newState) {
   if (!oldState.channel) {
@@ -22,7 +22,8 @@ function connected(newState) {
     channel.members.size === 1 &&
     channel.parentId === config.dynamic_category
   ) {
-    for (const c of category.children) if (c[1].members.size === 0) return;
+    for (const c of category.children.cache)
+      if (c[1].members.size === 0) return;
 
     channel.clone({
       name:
@@ -37,11 +38,11 @@ function disconnected(oldState) {
   const category = channel.parent;
 
   let count = 0;
-  for (const c of category.children) if (c[1].members.size === 0) count++;
+  for (const c of category.children.cache) if (c[1].members.size === 0) count++;
   if (count == 1) return;
 
   if (
-    category.children.size > 1 &&
+    category.children.cache.size > 1 &&
     channel.members.size == 0 &&
     channel.parentId === config.dynamic_category
   )

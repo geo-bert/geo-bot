@@ -1,55 +1,59 @@
-import { Constants } from "discord.js";
+import { SlashCommandBuilder } from "discord.js";
 
-export function initVanity(commands) {
-  commands.create({
-    name: "vanity",
-    description: "Add or edit vanity role.",
-    options: [
-      {
-        name: "name",
-        description: "This is the name of the role",
-        required: true,
-        type: Constants.ApplicationCommandOptionTypes.STRING,
-      },
-      {
-        name: "color",
-        description: "This is the color of the role",
-        required: true,
-        type: Constants.ApplicationCommandOptionTypes.STRING,
-      },
-      {
-        name: "user",
-        description: "Target for vanity role (Admin only).",
-        required: false,
-        type: Constants.ApplicationCommandOptionTypes.USER,
-      },
-    ],
-  });
+export const data = new SlashCommandBuilder()
+  .setName("vanity")
+  .setDescription("Modifies your vanity role")
+  .addSubcommand((subcommand) =>
+    subcommand
+      .setName("add")
+      .setDescription("Adds new vanity role")
+      .addStringOption((option) =>
+        option
+          .setName("name")
+          .setDescription("Name of the role")
+          .setRequired(true)
+      )
+      .addStringOption((option) =>
+        option
+          .setName("color")
+          .setDescription("Color of the role")
+          .setRequired(true)
+      )
+  )
+  .addSubcommand((subcommand) =>
+    subcommand
+      .setName("remove")
+      .setDescription("Removes vanity role")
+      .addUserOption((option) =>
+        option
+          .setName("user")
+          .setDescription("User to remove role of (admin only)")
+          .setRequired(false)
+      )
+  )
+  .addSubcommand((subcommand) =>
+    subcommand
+      .setName("name")
+      .setDescription("Edit vanity role name")
+      .addStringOption((option) =>
+        option
+          .setName("name")
+          .setDescription("New name of the role")
+          .setRequired(true)
+      )
+  )
+  .addSubcommand((subcommand) =>
+    subcommand
+      .setName("color")
+      .setDescription("Edit vanity role color")
+      .addStringOption((option) =>
+        option
+          .setName("color")
+          .setDescription("New color of the role")
+          .setRequired(true)
+      )
+  );
 
-  commands.create({
-    name: "unvanity",
-    description: "Remove vanity role.",
-    options: [
-      {
-        name: "user",
-        description: "Target for removal (Admin only).",
-        required: false,
-        type: Constants.ApplicationCommandOptionTypes.USER,
-      },
-      {
-        name: "reason",
-        description: "Reason for removal (Admin only)",
-        required: false,
-        type: Constants.ApplicationCommandOptionTypes.STRING,
-      },
-    ],
-  });
-}
-
-export function vanityRole(client, interaction) {
-  interaction.reply("This is WIP");
-}
-
-export function unvanityRole(client, interaction) {
-  interaction.reply("This is WIP");
+export async function execute(interaction) {
+  await interaction.reply("WIP");
 }

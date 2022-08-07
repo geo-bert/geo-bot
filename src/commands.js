@@ -1,25 +1,42 @@
-import config from "../config.json";
-import { initVanity, vanityRole, unvanityRole } from "./commands/vanity.js";
+import { Collection } from "discord.js";
+import fs from "fs";
+import path from "path";
 
-export function initCommands(client) {
-  const guild = client.guilds.cache.get(config.server);
-  const commands = guild.commands;
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
-  guild.commands.set([]).catch(console.error);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-  initVanity(commands);
+export async function initCommands(client) {
+  client.commands = new Collection();
+
+  const commandsPath = path.join(__dirname, "commands");
+  const commandFiles = fs
+    .readdirSync(commandsPath)
+    .filter((file) => file.endsWith(".js"));
+
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = await import(filePath);
+    client.commands.set(command.data.name, command);
+  }
 }
 
-export function handleCommand(client, interaction) {
-  if (!interaction.isCommand()) return;
+export async function handleCommand(client, interaction) {
+  if (!interaction.isChatInputCommand()) return;
 
-  switch (interaction.commandName) {
-    case "vanity":
-      vanityRole(client, interaction);
-      break;
-    case "unvanity":
-      unvanityRole(client, interaction);
-    default:
-      console.log(`Invalid command: ${commandName}`);
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command) return;
+
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({
+      content: "There was an error while executing this command!",
+      ephemeral: true,
+    });
   }
 }

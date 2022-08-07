@@ -1,5 +1,5 @@
-import { Client, Intents } from "discord.js";
-import token from "./secrets.json";
+import { ActivityType, Client, GatewayIntentBits } from "discord.js";
+import token from "./secrets.json" assert { type: "json" };
 import checkForSuppression from "./src/suppress.js";
 import updateChannel from "./src/dynamic-channels.js";
 import onLeave from "./src/leave-message.js";
@@ -8,16 +8,19 @@ import { initCommands, handleCommand } from "./src/commands.js";
 
 const client = new Client({
   intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-    Intents.FLAGS.GUILD_MEMBERS,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMembers,
   ],
 });
 
 client.once("ready", () => {
-  client.user.setActivity("the fiddle like an Irish man", { type: "PLAYING" });
+  client.user.setActivity("the sky and slacking off", {
+    type: ActivityType.Watching,
+  });
   console.log(`This bot is online! ${new Date()}`);
+
   initCommands(client);
 });
 
@@ -31,7 +34,7 @@ client.on("guildMemberAdd", (member) => autorole(client, member));
 
 client.on("guildMemberRemove", (member) => onLeave(client, member));
 
-client.on("interactionCreate", (interaction) =>
+client.on("interactionCreate", async (interaction) =>
   handleCommand(client, interaction)
 );
 
