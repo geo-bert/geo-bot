@@ -1,12 +1,4 @@
 {
-  "server": "<GUILD-ID>",
-  "dynamic_category": "<CATEGORY-ID>",
-  "admin_role": "<ROLE-ID>",
-  "leave_channel": "<CHANNEL-ID>",
-  "autorole": "<ROLE-ID>",
-
-  "moderated_channels": ["<CHANNEL-IDS>"],
-
   "whitelisted_previews": [
     "youtube.com/watch",
     "youtu.be",

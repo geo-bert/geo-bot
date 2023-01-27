@@ -11,7 +11,7 @@ export default function updateChannel(oldState, newState) {
     return;
   }
 
-  if (oldState.channel != newState.channel) moved(oldState, newState);
+  if (oldState.channel !== newState.channel) moved(oldState, newState);
 }
 
 function connected(newState) {
@@ -20,7 +20,7 @@ function connected(newState) {
 
   if (
     channel.members.size === 1 &&
-    channel.parentId === config.dynamic_category
+    channel.parentId === process.env.DYNAMIC_CATEGORY
   ) {
     for (const c of category.children.cache)
       if (c[1].members.size === 0) return;
@@ -39,12 +39,12 @@ function disconnected(oldState) {
 
   let count = 0;
   for (const c of category.children.cache) if (c[1].members.size === 0) count++;
-  if (count == 1) return;
+  if (count === 1) return;
 
   if (
     category.children.cache.size > 1 &&
-    channel.members.size == 0 &&
-    channel.parentId === config.dynamic_category
+    channel.members.size === 0 &&
+    channel.parentId === process.env.DYNAMIC_CATEGORY
   )
     channel.delete();
 }

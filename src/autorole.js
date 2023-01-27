@@ -1,8 +1,6 @@
-import config from "../config.json" assert { type: "json" };
-
 export default function autorole(client, member) {
   const role = client.guilds.cache
-    .get(config.server)
-    .roles.cache.get(config.autorole);
+    .get(process.env.SERVER)
+    .roles.cache.get(process.env.AUTO_ROLE);
   member.roles.add(role);
 }

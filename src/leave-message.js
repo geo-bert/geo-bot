@@ -1,8 +1,6 @@
-import config from "../config.json" assert { type: "json" };
-
 export default function onLeave(client, member) {
   const channel = client.guilds.cache
-    .get(config.server)
-    .channels.cache.get(config.leave_channel);
+    .get(process.env.SERVER)
+    .channels.cache.get(process.env.LEAVE_CHANNEL);
   channel.send(`Goodbye, ${member.toString()}!`);
 }

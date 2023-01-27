@@ -1,9 +1,10 @@
 import {ActivityType, Client, GatewayIntentBits} from "discord.js";
-import token from "./secrets.json" assert {type: "json"};
 import checkForSuppression from "./src/suppress.js";
 import updateChannel from "./src/dynamic-channels.js";
 import onLeave from "./src/leave-message.js";
 import autorole from "./src/autorole.js";
+import * as dotenv from "dotenv";
+dotenv.config()
 
 const client = new Client({
     intents: [
@@ -32,4 +33,4 @@ client.on("guildMemberAdd", (member) => autorole(client, member));
 
 client.on("guildMemberRemove", (member) => onLeave(client, member));
 
-client.login(token);
+client.login(process.env.BOT_TOKEN);
