@@ -4,7 +4,6 @@
   "admin_role": "<ROLE-ID>",
   "leave_channel": "<CHANNEL-ID>",
   "autorole": "<ROLE-ID>",
-  "client_id": "<CLIENT-ID>",
 
   "moderated_channels": ["<CHANNEL-IDS>"],
 
