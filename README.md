@@ -42,7 +42,7 @@ The channels are created in a defined category to alloy for static channels to e
 
 ## Command for custom vanity role
 
-This feature has yet to be ported from the [OberGru](https://github.com/Pasgru/OberGru) partner bot.
+This feature will ___not___ be ported from the [OberGru](https://github.com/Pasgru/OberGru) partner bot.
 
 ## Autorole
 
