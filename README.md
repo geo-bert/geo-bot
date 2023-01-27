@@ -51,3 +51,12 @@ When a user firsts join the server, it automatically assigns a role. It's ID is 
 ## Leave Message
 
 When a user leaves the server, a notification is sent. The channel-id it is sent to is defined in the `"leave_channel"` field. In the case of Weinfeinschmecker, it is `"#privat"`.
+
+### Needed Environment Variables
+* `BOT_TOKEN`: self-explanatory
+* `SERVER`: ID of server bot is on
+* `DYNAMIC_CATEGORY`: ID of channel category containing dynamic channels
+* `ADMIN_ROLE`: ID of admin role
+* `LEAVE_CHANNEL`: ID of channel user-leaves messages are sent to
+* `AUTO_ROLE`: ID of automatically assigned role
+* `MODERATED_CHANNELS`: comma separated list of IDs of channels where embeds should be suppressed
