@@ -1,1 +1,5 @@
 node_modules
+secrets.json
+config.json
+
+.idea

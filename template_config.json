@@ -1,0 +1,43 @@
+{
+  "server": "<GUILD-ID>",
+  "dynamic_category": "<CATEGORY-ID>",
+  "admin_role": "<ROLE-ID>",
+  "leave_channel": "<CHANNEL-ID>",
+  "autorole": "<ROLE-ID>",
+
+  "moderated_channels": ["<CHANNEL-IDS>"],
+
+  "whitelisted_previews": [
+    "youtube.com/watch",
+    "youtu.be",
+    "redd.it",
+    "imgur.com",
+    ".png",
+    ".jpg",
+    ".gif",
+    "tenor.com/view/"
+  ],
+
+  "channel_name_prefix": [
+    "Feld",
+    "Bauern",
+    "Blumen",
+    "Wein",
+    "Bier",
+    "Holz",
+    "Stein",
+    "Schnitzl",
+    "Ski"
+  ],
+
+  "channel_name_suffix": [
+    "stüberl",
+    "kammerl",
+    "hütte",
+    "wiesn",
+    "keller",
+    "saal",
+    "loch",
+    "kabinett"
+  ]
+}
