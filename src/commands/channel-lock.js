@@ -5,9 +5,22 @@ export const data = new SlashCommandBuilder()
   .setDescription("Provides information about the user.");
 
 export async function execute(interaction) {
-  // interaction.user is the object representing the User who ran the command
-  // interaction.member is the GuildMember object, which represents the user in the specific guild
-  await interaction.reply(
-    `This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`
-  );
+  // console.log(interaction);
+  const channel = interaction.channel;
+  if (!channel.isVoiceBased()) {
+    await interaction.reply(
+      `Bro trying to lock a text channel. 💀💀💀💀💀💀💀`
+    );
+  } else if (channel.members.has(interaction.user.id)) {
+    await interaction.reply(
+      `This command was run by ${interaction.user.username}, who is allowed to lock the channel.`
+    );
+    channel.permissionOverwrites.create(channel.guild.roles.everyone, {
+      Connect: false,
+    });
+  } else {
+    await interaction.reply(
+      `User ${interaction.user.username} can't lock this channel`
+    );
+  }
 }
