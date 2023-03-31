@@ -1,4 +1,4 @@
-import { CommandInteraction, Client, ApplicationCommandType, GuildMember } from "discord.js";
+import { CommandInteraction, Client, ApplicationCommandType, GuildMember, PermissionsBitField } from "discord.js";
 import { Command } from "../Command";
 
 export const ChannelLock: Command = {
@@ -7,23 +7,25 @@ export const ChannelLock: Command = {
   type: ApplicationCommandType.ChatInput,
 
   run: async (client: Client, interaction: CommandInteraction) => {
-    const user = interaction.user
-    const guild = interaction.guild
     const member = interaction.member
     if (!(member instanceof GuildMember)) return;
 
     const channel = member.voice.channel;
+    const canConnect = channel?.permissionsFor(channel?.guild.roles.everyone).has(PermissionsBitField.Flags.Connect)
 
     if (channel?.members.has(interaction.user.id)) {
       await interaction.reply(
-        `This command was run by ${interaction.user.username}, who is allowed to lock the channel.`
-      );
+        { content: `<@!${interaction.user.id}> ${!canConnect ? "un" : ""}locked <#${channel.id}>`,
+        allowedMentions: { users: [] } }
+      )
+      
       channel?.permissionOverwrites.create(channel?.guild.roles.everyone, {
-        Connect: false,
+        Connect: !canConnect,
       });
+
     } else {
       await interaction.reply(
-        `User ${interaction.user.username} can't lock this channel`
+        `User ${interaction.user.username} is not in Voice Channel => can't lock this channel`
       );
     }
   }
