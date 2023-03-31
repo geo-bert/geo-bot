@@ -1,10 +1,11 @@
 import {
   ActivityType,
   Client,
-  Collection,
   GatewayIntentBits,
   Events,
-  CommandInteraction,
+  VoiceState,
+  Message,
+  PartialMessage,
 } from "discord.js";
 import { Commands } from "./src/Commands.js";
 import checkForSuppression from "./src/suppress.js";
@@ -12,13 +13,7 @@ import updateChannel from "./src/dynamic-channels.js";
 import onLeave from "./src/leave-message.js";
 import autorole from "./src/autorole.js";
 import * as dotenv from "dotenv";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-import fs from "node:fs";
-import path from "node:path";
 dotenv.config();
 
 const client = new Client({
@@ -40,11 +35,11 @@ client.once(Events.ClientReady, async () => {
   console.log(`This bot is online! ${new Date()}`);
 });
 
-client.on(Events.MessageUpdate, (_, msg) => checkForSuppression(msg));
+client.on(Events.MessageUpdate, (_, msg: Message<boolean> | PartialMessage) => checkForSuppression(msg));
 
 client.on(Events.MessageCreate, (msg) => checkForSuppression(msg));
 
-client.on(Events.VoiceStateUpdate, (oldState, newState) =>
+client.on(Events.VoiceStateUpdate, (oldState: VoiceState, newState: VoiceState) =>
   updateChannel(oldState, newState)
 );
 

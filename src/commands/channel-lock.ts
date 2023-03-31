@@ -18,15 +18,16 @@ export const ChannelLock: Command = {
         { content: `<@!${interaction.user.id}> ${!canConnect ? "un" : ""}locked <#${channel.id}>`,
         allowedMentions: { users: [] } }
       )
-      
       channel?.permissionOverwrites.create(channel?.guild.roles.everyone, {
         Connect: !canConnect,
       });
 
+
     } else {
       await interaction.reply(
-        `User ${interaction.user.username} is not in Voice Channel => can't lock this channel`
-      );
+        { content: `You are not in a channel, nothing can be locked`,
+        ephemeral: true}
+      )
     }
   }
 }
