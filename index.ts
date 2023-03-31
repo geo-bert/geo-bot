@@ -4,7 +4,9 @@ import {
   Collection,
   GatewayIntentBits,
   Events,
+  CommandInteraction,
 } from "discord.js";
+import { Commands } from "./src/Commands.js";
 import checkForSuppression from "./src/suppress.js";
 import updateChannel from "./src/dynamic-channels.js";
 import onLeave from "./src/leave-message.js";
@@ -29,10 +31,12 @@ const client = new Client({
   ],
 });
 
-client.once(Events.ClientReady, () => {
-  client.user.setActivity("the sky and slacking off", {
+client.once(Events.ClientReady, async () => {
+  client?.user?.setActivity("the sky and slacking off", {
+
     type: ActivityType.Watching,
   });
+  await client?.application?.commands.set(Commands);
   console.log(`This bot is online! ${new Date()}`);
 });
 
@@ -48,29 +52,10 @@ client.on(Events.GuildMemberAdd, (member) => autorole(client, member));
 
 client.on(Events.GuildMemberRemove, (member) => onLeave(client, member));
 
-client.commands = new Collection();
-
-const commandsPath = path.join(__dirname, "src", "commands");
-const commandFiles = fs
-  .readdirSync(commandsPath)
-  .filter((file) => file.endsWith(".js"));
-
-for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = await import(filePath);
-  // Set a new item in the Collection with the key as the command name and the value as the exported module
-  if ("data" in command && "execute" in command) {
-    client.commands.set(command.data.name, command);
-  } else {
-    console.log(
-      `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
-    );
-  }
-}
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  const command = interaction.client.commands.get(interaction.commandName);
+  const command = Commands.find(c => c.name === interaction.commandName);
 
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`);
@@ -78,7 +63,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   try {
-    await command.execute(interaction);
+    await command.run(client, interaction);
   } catch (error) {
     console.error(error);
     if (interaction.replied || interaction.deferred) {
