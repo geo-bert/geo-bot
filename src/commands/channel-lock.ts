@@ -3,7 +3,7 @@ import { Command } from "../Command";
 
 export const ChannelLock: Command = {
   name: "lock",
-  description: "Provides information about the user.",
+  description: "Locks and unlocks current voice channel",
   type: ApplicationCommandType.ChatInput,
 
   run: async (client: Client, interaction: CommandInteraction) => {
