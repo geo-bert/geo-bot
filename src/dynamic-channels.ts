@@ -43,7 +43,7 @@ function disconnected(oldState: VoiceState) {
   const category = channel?.parent;
   const cache = category?.children.cache!;
 
-  if (channel?.members.size === 0) {
+  if (channel?.members.size === 0 && channel?.parentId === process.env.DYNAMIC_CATEGORY) {
     channel?.permissionOverwrites.create(channel?.guild.roles.everyone, {
       Connect: true,
     });
