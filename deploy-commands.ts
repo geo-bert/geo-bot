@@ -14,11 +14,9 @@ const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN!);
     );
 
     // The put method is used to fully refresh all commands in the guild with the current set
-    await rest.put(
-    
-      Routes.applicationCommands(process.env.APPLICATION_ID!),
-      { body: Commands.map((command) => JSON.parse(JSON.stringify(command))) }
-    );
+    await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID!), {
+      body: Commands.map((command) => JSON.parse(JSON.stringify(command))),
+    });
   } catch (error) {
     // And of course, make sure you catch and log any errors!
     console.error(error);

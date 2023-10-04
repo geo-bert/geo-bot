@@ -1,7 +1,10 @@
-import { ChannelType, Collection, VoiceState } from "discord.js";
+import { ChannelType, VoiceState } from "discord.js";
 import config from "../config.json" assert { type: "json" };
 
-export default function updateChannel(oldState: VoiceState, newState: VoiceState) {
+export default function updateChannel(
+  oldState: VoiceState,
+  newState: VoiceState
+) {
   if (!oldState.channel) {
     connected(newState);
     return;
@@ -25,8 +28,7 @@ function connected(newState: VoiceState) {
     channel?.members.size === 1 &&
     channel?.parentId === process.env.DYNAMIC_CATEGORY
   ) {
-    for (const c of cache)
-      if (c[1].members.size === 0) return;
+    for (const c of cache) if (c[1].members.size === 0) return;
 
     guild.channels.create({
       name:
@@ -43,7 +45,10 @@ function disconnected(oldState: VoiceState) {
   const category = channel?.parent;
   const cache = category?.children.cache!;
 
-  if (channel?.members.size === 0 && channel?.parentId === process.env.DYNAMIC_CATEGORY) {
+  if (
+    channel?.members.size === 0 &&
+    channel?.parentId === process.env.DYNAMIC_CATEGORY
+  ) {
     channel?.permissionOverwrites.create(channel?.guild.roles.everyone, {
       Connect: true,
     });
