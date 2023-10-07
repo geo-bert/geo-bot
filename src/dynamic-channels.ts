@@ -28,7 +28,7 @@ function connected(newState: VoiceState) {
     channel?.members.size === 1 &&
     channel?.parentId === process.env.DYNAMIC_CATEGORY
   ) {
-    for (const c of cache) if (c[1].members.size === 0) return;
+    for (const c of cache.values()) if (c.members.size === 0) return;
 
     guild.channels.create({
       name:
@@ -55,7 +55,7 @@ function disconnected(oldState: VoiceState) {
   }
 
   let count = 0;
-  for (const c of cache) if (c[1].members.size === 0) count++;
+  for (const c of cache.values()) if (c.members.size === 0) count++;
   if (count === 1) return;
 
   if (
