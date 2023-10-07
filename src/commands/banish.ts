@@ -6,6 +6,7 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ActionRowBuilder,
+  VoiceChannel,
 } from "discord.js";
 import { Command } from "../Command";
 
@@ -24,50 +25,79 @@ export const Banish: Command = {
   ...JSON.parse(JSON.stringify(description)),
   run: async (client: Client, interaction: CommandInteraction) => {
     const member = interaction.member;
-    const target = interaction.options.get("user")?.user!;
-    if (!(member instanceof GuildMember)) return;
-
-    const confirm = new ButtonBuilder()
-      .setCustomId("confirm")
-      .setLabel("Confirm Ban")
-      .setStyle(ButtonStyle.Danger);
-
-    const cancel = new ButtonBuilder()
-      .setCustomId("cancel")
-      .setLabel("Cancel")
-      .setStyle(ButtonStyle.Secondary);
-
-    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      cancel,
-      confirm
+    const target = interaction.options.get("user")?.member!;
+    const afkChannel = interaction.guild?.channels.cache.get(
+      process.env.AFK_CHANNEL!
     );
 
+    if (!(afkChannel instanceof VoiceChannel)) return;
+    if (!(member instanceof GuildMember)) return;
+    if (!(target instanceof GuildMember)) return;
+
+    if (!target.voice.channel) {
+      interaction.reply({
+        content: `${target.displayName} is not connected to a voice channel`,
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (target.voice.channel !== member.voice.channel) {
+      interaction.reply({
+        content: `You and ${target.displayName} are not in the same channel`,
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (
+      target.voice.channel === member.voice.channel &&
+      target.voice.channel.members.size <= 2
+    ) {
+      interaction.reply(
+        `Request succeeded! ${target.displayName} will be banished.`
+      );
+      target.edit({
+        channel: afkChannel,
+      });
+      return;
+    }
+
+    const banish = new ButtonBuilder()
+      .setCustomId("banish")
+      .setLabel("Banish")
+      .setStyle(ButtonStyle.Primary);
+
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(banish);
+
     const response = await interaction.reply({
-      content: `Are you sure you want to ban ${target} for reason: none?`,
+      content: `${member.displayName} wants to banish ${target.displayName} from the channel. Do you agree? (Request has 10 second timeout)`,
       components: [row],
     });
 
-    const collectorFilter = (i: any) => i.user.id === interaction.user.id;
-
     try {
-      const confirmation = await response.awaitMessageComponent({
-        filter: collectorFilter,
-        time: 10000,
-      });
-      if (confirmation.customId === "confirm") {
-        await confirmation.update({
-          content: `${target.username} has been banned for reason: asd`,
-          components: [],
+      while (true) {
+        const confirmation = await response.awaitMessageComponent({
+          time: 10000,
         });
-      } else if (confirmation.customId === "cancel") {
-        await confirmation.update({
-          content: "Action cancelled",
-          components: [],
-        });
+
+        if (
+          confirmation.customId === "banish" &&
+          confirmation.member !== interaction.member
+        ) {
+          await confirmation.update({
+            content: `Request succeeded! ${target.displayName} will be banished.`,
+            components: [],
+          });
+
+          target.edit({
+            channel: afkChannel,
+          });
+        }
       }
     } catch (e) {
       await interaction.editReply({
-        content: "Confirmation not received within 1 second, cancelling",
+        content: `Request timed out. Won't banish ${target.displayName}`,
         components: [],
       });
     }
