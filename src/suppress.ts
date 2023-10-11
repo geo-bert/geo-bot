@@ -1,8 +1,11 @@
 import { Message, PartialMessage } from "discord.js";
 import config from "../config.json" assert { type: "json" };
 
-export default function checkForSuppression(msg: Message<boolean> | PartialMessage) {
+export default function checkForSuppression(
+  msg: Message<boolean> | PartialMessage
+) {
   if (!msg.embeds.length) return;
+  if (msg.member?.roles.cache.has(process.env.MODERATION_EXCLUDED!)) return;
 
   const moderated_channels = process.env.MODERATED_CHANNELS?.split(",");
 

@@ -28,19 +28,22 @@ const client = new Client({
 
 client.once(Events.ClientReady, async () => {
   client?.user?.setActivity("the sky and slacking off", {
-
     type: ActivityType.Watching,
   });
   await client?.application?.commands.set(Commands);
   console.log(`This bot is online! ${new Date()}`);
 });
 
-client.on(Events.MessageUpdate, (_, msg: Message<boolean> | PartialMessage) => checkForSuppression(msg));
+client.on(Events.MessageUpdate, (_, msg: Message<boolean> | PartialMessage) =>
+  checkForSuppression(msg)
+);
 
 client.on(Events.MessageCreate, (msg) => checkForSuppression(msg));
 
-client.on(Events.VoiceStateUpdate, (oldState: VoiceState, newState: VoiceState) =>
-  updateChannel(oldState, newState)
+client.on(
+  Events.VoiceStateUpdate,
+  (oldState: VoiceState, newState: VoiceState) =>
+    updateChannel(oldState, newState)
 );
 
 client.on(Events.GuildMemberAdd, (member) => autorole(client, member));
@@ -50,7 +53,7 @@ client.on(Events.GuildMemberRemove, (member) => onLeave(client, member));
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  const command = Commands.find(c => c.name === interaction.commandName);
+  const command = Commands.find((c) => c.name === interaction.commandName);
 
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`);
@@ -58,7 +61,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   try {
-    await command.run(client, interaction);
+    command.run(client, interaction);
   } catch (error) {
     console.error(error);
     if (interaction.replied || interaction.deferred) {

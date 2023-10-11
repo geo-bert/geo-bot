@@ -11,16 +11,37 @@
   ],
 
   "channel_name_prefix": [
-    "Feld",
+    "Alm",
     "Bauern",
     "Blumen",
-    "Wein",
     "Bier",
+    "Club",
+    "Dachs",
+    "Eichen",
+    "Feld",
+    "Garten",
     "Holz",
+    "Igel",
+    "Jodel",
+    "Karpfen",
+    "Lamm",
+    "Minnen",
+    "Nuss",
+    "Ofen",
+    "Obers",
+    "Parceval",
+    "Quarz",
+    "Ritter",
     "Stein",
     "Schnitzl",
     "Ski",
-    "Garten"
+    "Tafel",
+    "Unter",
+    "Vogel",
+    "Wein",
+    "Xander",
+    "Ybbs",
+    "Zistel"
   ],
 
   "channel_name_suffix": [
@@ -31,6 +52,19 @@
     "keller",
     "saal",
     "loch",
-    "kabinett"
+    "kabinett",
+    "winkel",
+    "zimmer",
+    "raum",
+    "stube",
+    "halle",
+    "kammer",
+    "bude",
+    "gemach",
+    "kabine",
+    "refugium",
+    "bleibe",
+    "ecke",
+    "butze"
   ]
 }
