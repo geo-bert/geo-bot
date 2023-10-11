@@ -93,6 +93,13 @@ export const Banish: Command = {
           target.edit({
             channel: afkChannel,
           });
+
+          return;
+        } else if (
+          confirmation.customId === "banish" &&
+          confirmation.member === interaction.member
+        ) {
+          await confirmation.update({});
         }
       }
     } catch (e) {

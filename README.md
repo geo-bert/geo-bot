@@ -50,7 +50,7 @@ category.
 
 ## Command for custom vanity role
 
-This feature will ___not___ be ported from the [OberGru](https://github.com/Pasgru/OberGru) partner bot.
+This feature will **_not_** be ported from the [OberGru](https://github.com/Pasgru/OberGru) partner bot.
 
 ## Lock Command
 
@@ -75,10 +75,4 @@ field. In the case of Weinfeinschmecker, it is `"#privat"`.
 
 ### Needed Environment Variables
 
-* `BOT_TOKEN`: self-explanatory
-* `SERVER`: ID of server bot is on
-* `DYNAMIC_CATEGORY`: ID of channel category containing dynamic channels
-* `ADMIN_ROLE`: ID of admin role
-* `LEAVE_CHANNEL`: ID of channel user-leaves messages are sent to
-* `AUTO_ROLE`: ID of automatically assigned role
-* `MODERATED_CHANNELS`: comma separated list of IDs of channels where embeds should be suppressed
+Can be found in `.env_example`
