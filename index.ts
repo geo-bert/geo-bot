@@ -27,8 +27,8 @@ const client = new Client({
 });
 
 client.once(Events.ClientReady, async () => {
-  client?.user?.setActivity("the sky and slacking off", {
-    type: ActivityType.Watching,
+  client?.user?.setActivity("Running version 2.3.2", {
+    type: ActivityType.Custom,
   });
   await client?.application?.commands.set(Commands);
   console.log(`This bot is online! ${new Date()}`);
