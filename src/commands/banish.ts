@@ -83,10 +83,12 @@ export const Banish: Command = {
 
         if (
           confirmation.customId === "banish" &&
-          confirmation.member !== interaction.member
+          confirmation.member !== interaction.member &&
+          confirmation.member instanceof GuildMember &&
+          confirmation.member.voice.channel
         ) {
           await confirmation.update({
-            content: `Request succeeded! ${target.displayName} will be banished.`,
+            content: `Request succeeded! ${target.displayName} will be banished. ${confirmation.member.displayName} also agreed`,
             components: [],
           });
 
