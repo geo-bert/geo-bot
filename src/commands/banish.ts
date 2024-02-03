@@ -7,6 +7,7 @@ import {
   ButtonStyle,
   ActionRowBuilder,
   VoiceChannel,
+  EmbedBuilder,
 } from "discord.js";
 import { Command } from "../Command";
 
@@ -50,30 +51,38 @@ export const Banish: Command = {
       return;
     }
 
-    if (
-      target.voice.channel === member.voice.channel &&
-      target.voice.channel.members.size <= 2
-    ) {
-      interaction.reply(
-        `Request succeeded! ${target.displayName} will be banished.`
-      );
-      target.edit({
-        channel: afkChannel,
+    const embed = new EmbedBuilder()
+      .setTitle("Banish Request")
+      .setColor(0xff69b4)
+      .setAuthor({
+        name: member.displayName,
+        iconURL: member.displayAvatarURL(),
       });
+
+    const undeafenedMembers = member.voice.channel.members.filter(
+      (member) => !member.voice.deaf && !member.voice.mute
+    ).size;
+
+    const isInstaBanishable = target.voice.channel === member.voice.channel && (undeafenedMembers === 1 || (undeafenedMembers === 2 && !target.voice.mute))
+    if (isInstaBanishable) {
+      embed.setDescription(`The user ${member.displayName} banished ${target.displayName}.`);
+      interaction.reply({ embeds: [embed] });
+      target.edit({ channel: afkChannel });
       return;
     }
 
     const banish = new ButtonBuilder()
       .setCustomId("banish")
       .setLabel("Banish")
-      .setStyle(ButtonStyle.Primary);
+      .setStyle(ButtonStyle.Danger);
 
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(banish);
 
-    const response = await interaction.reply({
-      content: `${member.displayName} wants to banish ${target.displayName} from the channel. Do you agree? (Request has 10 second timeout)`,
-      components: [row],
-    });
+    embed
+      .setDescription(`${member.user.tag} wants to banish ${target.user.tag} from the channel. Do you agree?`)
+      .setFields({ name: "Timeout", value: "Request will time out in 10 seconds" });
+
+    const response = await interaction.reply({ embeds: [embed], components: [row] });
 
     try {
       while (true) {
@@ -87,8 +96,16 @@ export const Banish: Command = {
           confirmation.member instanceof GuildMember &&
           confirmation.member.voice.channel
         ) {
+          embed
+            .setFields({
+              name: "Accomplice",
+              value: confirmation.member.user.tag,
+            })
+            .setDescription(
+              `Banish request succeeded! ${target.user.tag} will be banished.`
+            );
           await confirmation.update({
-            content: `Request succeeded! ${target.displayName} will be banished. ${confirmation.member.displayName} also agreed`,
+            embeds: [embed],
             components: [],
           });
 
@@ -101,12 +118,16 @@ export const Banish: Command = {
           confirmation.customId === "banish" &&
           confirmation.member === interaction.member
         ) {
+          // Case if initiator clicks button
           await confirmation.update({});
         }
       }
     } catch (e) {
+      embed
+        .setDescription(null)
+        .setFields({ name: "Timeout", value: `Request has timed out.` });
       await interaction.editReply({
-        content: `Request timed out. Won't banish ${target.displayName}`,
+        embeds: [embed],
         components: [],
       });
     }

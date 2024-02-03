@@ -27,7 +27,7 @@ const client = new Client({
 });
 
 client.once(Events.ClientReady, async () => {
-  client?.user?.setActivity("Running version 2.3.2", {
+  client?.user?.setActivity("Running version 2.3.3", {
     type: ActivityType.Custom,
   });
   await client?.application?.commands.set(Commands);

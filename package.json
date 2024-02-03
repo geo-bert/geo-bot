@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node --esm ./index.ts",
+    "start": "node --no-warnings=ExperimentalWarning --loader ts-node/esm index.ts",
     "deploy-commands": "ts-node --esm ./deploy-commands.ts"
   },
   "author": "Geobert",
