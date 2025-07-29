@@ -36,7 +36,9 @@ export const ChannelLock: Command = {
           Connect: false,
         });
       } else {
-        channel?.permissionOverwrites.delete(channel.guild.roles.everyone)
+        channel.permissionOverwrites.edit(channel.guild.roles.everyone, {
+          Connect: null,
+        });
       }
     } else {
       await interaction.reply({
