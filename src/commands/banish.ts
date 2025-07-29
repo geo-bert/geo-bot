@@ -28,7 +28,7 @@ export const Banish: Command = {
   run: async (client: Client, interaction: CommandInteraction) => {
     if (!interaction.isChatInputCommand()) return;
     const member = interaction.member;
-    const targetUser = interaction.options.getUser('target');
+    const targetUser = interaction.options.getUser('user');
     const afkChannel = interaction.guild?.channels.cache.get(
       process.env.AFK_CHANNEL!
     );

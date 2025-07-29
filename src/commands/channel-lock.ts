@@ -31,15 +31,9 @@ export const ChannelLock: Command = {
         allowedMentions: { users: [] },
       });
 
-      if(canConnect) {
-        channel.permissionOverwrites.create(channel.guild.roles.everyone, {
-          Connect: false,
-        });
-      } else {
-        channel.permissionOverwrites.edit(channel.guild.roles.everyone, {
-          Connect: null,
-        });
-      }
+      channel.permissionOverwrites.create(channel.guild.roles.everyone, {
+        Connect: !canConnect,
+      });
     } else {
       await interaction.reply({
         content: `You are not in a channel, nothing can be locked`,

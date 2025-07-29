@@ -13,6 +13,7 @@ import updateChannel from "./src/dynamic-channels.js";
 import onLeave from "./src/leave-message.js";
 import autorole from "./src/autorole.js";
 import * as dotenv from "dotenv";
+import voiceStatus from "./src/voice-status.js";
 
 dotenv.config();
 
@@ -23,11 +24,12 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildPresences
   ],
 });
 
 client.once(Events.ClientReady, async () => {
-  client?.user?.setActivity("Running version 2.3.5", {
+  client?.user?.setActivity("Running version 2.4.0", {
     type: ActivityType.Custom,
   });
   await client?.application?.commands.set(Commands);
@@ -42,8 +44,10 @@ client.on(Events.MessageCreate, (msg) => checkForSuppression(msg));
 
 client.on(
   Events.VoiceStateUpdate,
-  (oldState: VoiceState, newState: VoiceState) =>
+  (oldState: VoiceState, newState: VoiceState) => {
+    voiceStatus(newState);
     updateChannel(oldState, newState)
+  }
 );
 
 client.on(Events.GuildMemberAdd, (member) => autorole(client, member));

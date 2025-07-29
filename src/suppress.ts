@@ -1,5 +1,5 @@
 import { Message, PartialMessage } from "discord.js";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 export default function checkForSuppression(
   msg: Message<boolean> | PartialMessage

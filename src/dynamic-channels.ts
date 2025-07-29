@@ -1,5 +1,5 @@
 import { ChannelType, VoiceState } from "discord.js";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 export default function updateChannel(
   oldState: VoiceState,
