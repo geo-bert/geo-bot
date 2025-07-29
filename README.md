@@ -60,7 +60,7 @@ unlock
 ## Banish
 
 Command that allows for a user to be moved to a dedicated channel if enough people vote. Votes needed are one person if
-two people are in a voice channel, and two people if there are more than two users connected. Usage: `\banish <user>` to
+two people are in a voice channel, and two people if there are more than two users connected. Usage: `/banish <user>` to
 start the vote.
 
 ## Auto-role

@@ -8,6 +8,7 @@ import {
   ActionRowBuilder,
   VoiceChannel,
   EmbedBuilder,
+  User,
 } from "discord.js";
 import { Command } from "../Command";
 
@@ -25,15 +26,17 @@ const description = new SlashCommandBuilder()
 export const Banish: Command = {
   ...JSON.parse(JSON.stringify(description)),
   run: async (client: Client, interaction: CommandInteraction) => {
+    if (!interaction.isChatInputCommand()) return;
     const member = interaction.member;
-    const target = interaction.options.get("user")?.member!;
+    const targetUser = interaction.options.getUser('target');
     const afkChannel = interaction.guild?.channels.cache.get(
       process.env.AFK_CHANNEL!
     );
 
     if (!(afkChannel instanceof VoiceChannel)) return;
     if (!(member instanceof GuildMember)) return;
-    if (!(target instanceof GuildMember)) return;
+    if (!(targetUser instanceof User)) return;
+    const target = await member.guild.members.fetch(targetUser.id)
 
     if (!target.voice.channel) {
       interaction.reply({
