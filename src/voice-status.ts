@@ -1,4 +1,5 @@
 import { VoiceState } from "discord.js";
+import { notifyAdmins } from "./message-admins.js";
 
 export default function voiceStatus(
   oldState: VoiceState,
@@ -21,7 +22,7 @@ export default function voiceStatus(
     const woAfk = guildMember.nickname.replace("[AFK] ", "");
     const woOffline = woAfk.replace("[Offline] ", "");
 
-    guildMember.setNickname(woOffline, "Reset Nickname").catch(console.error);
+    guildMember.setNickname(woOffline, "Reset Nickname").catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
     return;
   }
 
@@ -31,17 +32,17 @@ export default function voiceStatus(
 
     guildMember
       .setNickname(`[AFK] ${woOffline ?? user.username}`, "Status-based nickname update")
-      .catch(console.error);
+      .catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
     
-      user.send("Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘").catch(console.error);
+      user.send("Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘").catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
   } else if(status === "offline") {
     const woAfk = guildMember.nickname?.replace("[AFK] ", "");
     const woOffline = woAfk?.replace("[Offline] ", "");
 
     guildMember
       .setNickname(`[Offline] ${woOffline ?? user.username}`, "Status-based nickname update")
-      .catch(console.error);
-    user.send("Hey 👋,\nJoining voice while *offline*?🤔 Wow, truly a master of stealth ☺️!\n\nWas this on purpose?🫣\n\nLove,\nOberGru 😘").catch(console.error);
+      .catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
+    user.send("Hey 👋,\nJoining voice while *offline*?🤔 Wow, truly a master of stealth ☺️!\n\nWas this on purpose?🫣\n\nLove,\nOberGru 😘").catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
   } else {
     // unreachable
   }

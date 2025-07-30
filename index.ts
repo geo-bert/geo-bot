@@ -14,11 +14,12 @@ import onLeave from "./src/leave-message.js";
 import autorole from "./src/autorole.js";
 import * as dotenv from "dotenv";
 import voiceStatus from "./src/voice-status.js";
+import { notifyAdmins } from "./src/message-admins.js";
 
 dotenv.config();
 
 process.on("unhandledRejection", (reason, promise) => {
-  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  notifyAdmins(client.users.cache, `Unhandled Rejection at: ${JSON.stringify(promise, null, 2)} reason: ${JSON.stringify(reason, null, 2)}`);
 });
 
 const client = new Client({
@@ -34,7 +35,7 @@ const client = new Client({
 });
 
 client.once(Events.ClientReady, async () => {
-  client?.user?.setActivity("Running version 2.4.2", {
+  client?.user?.setActivity("Running version 2.5.0", {
     type: ActivityType.Custom,
   });
   await client?.application?.commands.set(Commands);
@@ -72,14 +73,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
   const command = Commands.find((c) => c.name === interaction.commandName);
 
   if (!command) {
-    console.error(`No command matching ${interaction.commandName} was found.`);
+    notifyAdmins(client.users.cache, `No command matching ${interaction.commandName} was found.`);
     return;
   }
 
   try {
     command.run(client, interaction);
   } catch (error) {
-    console.error(error);
+    notifyAdmins(client.users.cache, error);
     if (interaction.replied || interaction.deferred) {
       await interaction.followUp({
         content: "There was an error while executing this command!",
