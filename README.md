@@ -73,6 +73,12 @@ the case of Weinfeinschmecker, it is the "Gast" role.
 When a user leaves the server, a notification is sent. The channel-id it is sent to is defined in the `"leave_channel"`
 field. In the case of Weinfeinschmecker, it is `"#privat"`.
 
+## Voice Status Reminder
+
+When a user joins a voice channel whilst idle or offline they get sent a DM reminding them of their current status and 
+their nickname is prefixed with their status. If they have a nickname prefix and join whilst online, the prefix is
+removed.
+
 ### Needed Environment Variables
 
 Can be found in `.env_example`
