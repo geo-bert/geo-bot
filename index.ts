@@ -17,6 +17,10 @@ import voiceStatus from "./src/voice-status.js";
 
 dotenv.config();
 
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -24,12 +28,13 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildPresences
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.DirectMessages
   ],
 });
 
 client.once(Events.ClientReady, async () => {
-  client?.user?.setActivity("Running version 2.4.0", {
+  client?.user?.setActivity("Running version 2.4.2", {
     type: ActivityType.Custom,
   });
   await client?.application?.commands.set(Commands);
@@ -45,8 +50,8 @@ client.on(Events.MessageCreate, (msg) => checkForSuppression(msg));
 client.on(
   Events.VoiceStateUpdate,
   (oldState: VoiceState, newState: VoiceState) => {
-    voiceStatus(newState);
-    updateChannel(oldState, newState)
+    voiceStatus(oldState, newState);
+    updateChannel(oldState, newState);
   }
 );
 
@@ -56,6 +61,13 @@ client.on(Events.GuildMemberRemove, (member) => onLeave(client, member));
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
+  if (interaction.channelId !== process.env.COMMAND_CHANNEL) {
+    interaction.reply({
+      content: "Wrong channel.",
+      ephemeral: true,
+    });
+    return;
+  }
 
   const command = Commands.find((c) => c.name === interaction.commandName);
 

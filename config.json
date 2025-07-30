@@ -32,7 +32,6 @@
     "Ofen",
     "Obers",
     "Parceval",
-    "Quarz",
     "Ritter",
     "Stein",
     "Schnitzl",
@@ -40,10 +39,22 @@
     "Tafel",
     "Unter",
     "Vogel",
+    "Weiher",
     "Wein",
-    "Xander",
-    "Ybbs",
-    "Zistel"
+    "Zistel",
+    "Zwickel",
+    "Dorf",
+    "Alpen",
+    "Bauern",
+    "Most",
+    "Heurigen",
+    "Kaiser",
+    "Wappler",
+    "Reb",
+    "Schützen",
+    "Hawi",
+    "Skibi",
+    "Heisl"
   ],
 
   "channel_name_suffix": [
@@ -67,6 +78,17 @@
     "refugium",
     "bleibe",
     "ecke",
-    "butze"
+    "butze",
+    "kaff",
+    "stadl",
+    "kiste",
+    "wiese",
+    "kirche",
+    "hof",
+    "platz",
+    "garten",
+    "sauna",
+    "kneipe",
+    "kabine"
   ]
 }

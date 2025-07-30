@@ -1,34 +1,48 @@
-import { ChannelType, GuildMember, VoiceState } from "discord.js";
+import { VoiceState } from "discord.js";
 
-export default function voiceStatus(state: VoiceState) {
-  return
-  // if (!state.channel) return;
-  // const user = state.member?.user;
-  // if (!user) return;
+export default function voiceStatus(
+  oldState: VoiceState,
+  newState: VoiceState
+) {
+  if (oldState.channel) return;
+  if (!newState.channel) return;
+  const user = newState.member?.user;
+  if (!user) return;
 
-  // const guildMember = state.member?.guild.members.cache.get(user.id);
-  // if (!guildMember) return;
-  // const status = guildMember.presence?.status;
-  // if (!status) return;
+  const guildMember = newState.member?.guild.members.cache.get(user.id);
+  if (!guildMember) return;
+  const status = guildMember.presence?.status;
+  if (!status) return;
 
-  // if (
-  //   guildMember.nickname?.startsWith("[AFK]") ||
-  //   guildMember.nickname?.startsWith("[Offline]")
-  // )
-  //   return;
+  if(status === "online" || status === "dnd") {
+    if(!guildMember.nickname) return;
+    if(!guildMember.nickname.includes("[AFK]") && !guildMember.nickname.includes("[Offline]")) return;
 
-  // let newNickname: string | undefined;
+    const woAfk = guildMember.nickname.replace("[AFK] ", "");
+    const woOffline = woAfk.replace("[Offline] ", "");
 
-  // if (status === "idle") {
-  //   newNickname = `[AFK] ${guildMember.nickname}`;
-  // } else if (status === "offline") {
-  //   newNickname = `[Offline] ${guildMember.nickname}`;
-  // } else {
-  //   // Don't change nickname for online or dnd
-  //   return;
-  // }
+    guildMember.setNickname(woOffline, "Reset Nickname").catch(console.error);
+    return;
+  }
 
-  // guildMember
-  //   .setNickname(newNickname, "Status-based nickname update")
-  //   .catch(console.error);
+  if(status === "idle") {
+    const woAfk = guildMember.nickname?.replace("[AFK] ", "");
+    const woOffline = woAfk?.replace("[Offline] ", "");
+
+    guildMember
+      .setNickname(`[AFK] ${woOffline ?? user.username}`, "Status-based nickname update")
+      .catch(console.error);
+    
+      user.send("Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘").catch(console.error);
+  } else if(status === "offline") {
+    const woAfk = guildMember.nickname?.replace("[AFK] ", "");
+    const woOffline = woAfk?.replace("[Offline] ", "");
+
+    guildMember
+      .setNickname(`[Offline] ${woOffline ?? user.username}`, "Status-based nickname update")
+      .catch(console.error);
+    user.send("Hey 👋,\nJoining voice while *offline*?🤔 Wow, truly a master of stealth ☺️!\n\nWas this on purpose?🫣\n\nLove,\nOberGru 😘").catch(console.error);
+  } else {
+    // unreachable
+  }
 }
