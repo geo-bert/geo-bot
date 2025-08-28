@@ -45,15 +45,6 @@ function disconnected(oldState: VoiceState) {
   const category = channel?.parent;
   const cache = category?.children.cache!;
 
-  if (
-    channel?.members.size === 0 &&
-    channel?.parentId === process.env.DYNAMIC_CATEGORY
-  ) {
-    channel?.permissionOverwrites.create(channel?.guild.roles.everyone, {
-      Connect: true,
-    });
-  }
-
   let count = 0;
   for (const c of cache.values()) if (c.members.size === 0) count++;
   if (count === 1) return;
@@ -62,8 +53,16 @@ function disconnected(oldState: VoiceState) {
     cache.size > 1 &&
     channel?.members.size === 0 &&
     channel?.parentId === process.env.DYNAMIC_CATEGORY
-  )
+  ) {
     channel.delete();
+  } else if (
+    channel?.members.size === 0 &&
+    channel?.parentId === process.env.DYNAMIC_CATEGORY
+  ) {
+    channel?.permissionOverwrites.create(channel?.guild.roles.everyone, {
+      Connect: true,
+    });
+  }
 }
 
 function moved(oldState: VoiceState, newState: VoiceState) {

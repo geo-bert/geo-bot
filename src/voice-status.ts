@@ -15,34 +15,45 @@ export default function voiceStatus(
   const status = guildMember.presence?.status;
   if (!status) return;
 
-  if(status === "online" || status === "dnd") {
-    if(!guildMember.nickname) return;
-    if(!guildMember.nickname.includes("[AFK]") && !guildMember.nickname.includes("[Offline]")) return;
+  if (status === "online" || status === "dnd") {
+    if (!guildMember.nickname) return;
+    if (
+      !guildMember.nickname.includes("[AFK]") &&
+      !guildMember.nickname.includes("[Offline]")
+    )
+      return;
 
     const woAfk = guildMember.nickname.replace("[AFK] ", "");
     const woOffline = woAfk.replace("[Offline] ", "");
 
-    guildMember.setNickname(woOffline, "Reset Nickname").catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
+    guildMember.setNickname(woOffline, "Reset Nickname");
     return;
   }
 
-  if(status === "idle") {
+  if (status === "idle") {
     const woAfk = guildMember.nickname?.replace("[AFK] ", "");
     const woOffline = woAfk?.replace("[Offline] ", "");
 
-    guildMember
-      .setNickname(`[AFK] ${woOffline ?? user.username}`, "Status-based nickname update")
-      .catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
-    
-      user.send("Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘").catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
-  } else if(status === "offline") {
+    guildMember.setNickname(
+      `[AFK] ${woOffline ?? user.username}`,
+      "Status-based nickname update"
+    );
+
+    user.send(
+      "Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘"
+    );
+  } else if (status === "offline") {
     const woAfk = guildMember.nickname?.replace("[AFK] ", "");
     const woOffline = woAfk?.replace("[Offline] ", "");
 
-    guildMember
-      .setNickname(`[Offline] ${woOffline ?? user.username}`, "Status-based nickname update")
-      .catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
-    user.send("Hey 👋,\nJoining voice while *offline*?🤔 Wow, truly a master of stealth ☺️!\n\nWas this on purpose?🫣\n\nLove,\nOberGru 😘").catch(e => notifyAdmins(newState.channel!.client.users.cache, e));
+    guildMember.setNickname(
+      `[Offline] ${woOffline ?? user.username}`,
+      "Status-based nickname update"
+    );
+
+    user.send(
+      "Hey 👋,\nJoining voice while *offline*?🤔 Wow, truly a master of stealth ☺️!\n\nWas this on purpose?🫣\n\nLove,\nOberGru 😘"
+    );
   } else {
     // unreachable
   }
