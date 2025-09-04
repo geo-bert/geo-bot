@@ -23,19 +23,13 @@ export default function voiceStatus(
     )
       return;
 
-    const woAfk = guildMember.nickname.replace("[AFK] ", "");
-    const woOffline = woAfk.replace("[Offline] ", "");
-
-    guildMember.setNickname(woOffline, "Reset Nickname");
+    guildMember.setNickname(user.username, "Reset Nickname");
     return;
   }
 
   if (status === "idle") {
-    const woAfk = guildMember.nickname?.replace("[AFK] ", "");
-    const woOffline = woAfk?.replace("[Offline] ", "");
-
     guildMember.setNickname(
-      `[AFK] ${woOffline ?? user.username}`,
+      `[AFK]`,
       "Status-based nickname update"
     );
 
@@ -43,11 +37,8 @@ export default function voiceStatus(
       "Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘"
     );
   } else if (status === "offline") {
-    const woAfk = guildMember.nickname?.replace("[AFK] ", "");
-    const woOffline = woAfk?.replace("[Offline] ", "");
-
     guildMember.setNickname(
-      `[Offline] ${woOffline ?? user.username}`,
+      `[Offline]`,
       "Status-based nickname update"
     );
 
