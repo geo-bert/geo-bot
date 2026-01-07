@@ -18,8 +18,8 @@ export default function voiceStatus(
   if (status === "online" || status === "dnd") {
     if (!guildMember.nickname) return;
     if (
-      !guildMember.nickname.includes("[AFK]") &&
-      !guildMember.nickname.includes("[Offline]")
+      !guildMember.nickname.includes("Konrad") &&
+      !guildMember.nickname.includes("Friederich")
     )
       return;
 
@@ -28,23 +28,21 @@ export default function voiceStatus(
   }
 
   if (status === "idle") {
-    guildMember.setNickname(
-      `[AFK]`,
-      "Status-based nickname update"
-    );
+    guildMember.setNickname(`Konrad`, "Status-based nickname update");
 
-    user.send(
-      "Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘"
-    );
+    user
+      .send(
+        "Hey 👋,\nAre you aware you are appearing *idle*? 🤔\nJust letting you know ☺️!\n\nLove,\nOberGru 😘"
+      )
+      .catch(); // ignore people who block the bot;
   } else if (status === "offline") {
-    guildMember.setNickname(
-      `[Offline]`,
-      "Status-based nickname update"
-    );
+    guildMember.setNickname(`Friederich`, "Status-based nickname update");
 
-    user.send(
-      "Hey 👋,\nJoining voice while *offline*?🤔 Wow, truly a master of stealth ☺️!\n\nWas this on purpose?🫣\n\nLove,\nOberGru 😘"
-    );
+    user
+      .send(
+        "Hey 👋,\nJoining voice while *offline*?🤔 Wow, truly a master of stealth ☺️!\n\nWas this on purpose?🫣\n\nLove,\nOberGru 😘"
+      )
+      .catch(); // ignore people who block the bot
   } else {
     // unreachable
   }
