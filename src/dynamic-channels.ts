@@ -21,13 +21,13 @@ export default function updateChannel(
 function connected(newState: VoiceState) {
   const channel = newState.channel;
   const guild = newState.guild;
-  const category = channel?.parent;
-  const cache = category?.children.cache!;
 
   if (
     channel?.members.size === 1 &&
     channel?.parentId === process.env.DYNAMIC_CATEGORY
   ) {
+    const category = channel.parent!;
+    const cache = category.children.cache;
     for (const c of cache.values()) if (c.members.size === 0) return;
 
     guild.channels.create({
@@ -43,7 +43,7 @@ function connected(newState: VoiceState) {
 function disconnected(oldState: VoiceState) {
   const channel = oldState.channel;
   const category = channel?.parent;
-  const cache = category?.children.cache!;
+  const cache = category?.children.cache ?? new Map();
 
   let count = 0;
   for (const c of cache.values()) if (c.members.size === 0) count++;

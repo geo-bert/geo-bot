@@ -1,14 +1,14 @@
 import {
-  CommandInteraction,
-  Client,
-  GuildMember,
-  SlashCommandBuilder,
+  ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  ActionRowBuilder,
-  VoiceChannel,
+  Client,
+  CommandInteraction,
   EmbedBuilder,
+  GuildMember,
+  SlashCommandBuilder,
   User,
+  VoiceChannel,
 } from "discord.js";
 import { Command } from "../Command";
 
@@ -28,7 +28,7 @@ export const Banish: Command = {
   run: async (client: Client, interaction: CommandInteraction) => {
     if (!interaction.isChatInputCommand()) return;
     const member = interaction.member;
-    const targetUser = interaction.options.getUser('user');
+    const targetUser = interaction.options.getUser("user");
     const afkChannel = interaction.guild?.channels.cache.get(
       process.env.AFK_CHANNEL!
     );
@@ -36,7 +36,7 @@ export const Banish: Command = {
     if (!(afkChannel instanceof VoiceChannel)) return;
     if (!(member instanceof GuildMember)) return;
     if (!(targetUser instanceof User)) return;
-    const target = await member.guild.members.fetch(targetUser.id)
+    const target = await member.guild.members.fetch(targetUser.id);
 
     if (!target.voice.channel) {
       interaction.reply({
@@ -66,9 +66,14 @@ export const Banish: Command = {
       (member) => !member.voice.deaf && !member.voice.mute
     ).size;
 
-    const isInstaBanishable = target.voice.channel === member.voice.channel && (undeafenedMembers === 1 || (undeafenedMembers === 2 && !target.voice.mute))
+    const isInstaBanishable =
+      target.voice.channel === member.voice.channel &&
+      (undeafenedMembers === 1 ||
+        (undeafenedMembers === 2 && !target.voice.mute));
     if (isInstaBanishable) {
-      embed.setDescription(`The user ${member.displayName} banished ${target.displayName}.`);
+      embed.setDescription(
+        `The user ${member.displayName} banished ${target.displayName}.`
+      );
       interaction.reply({ embeds: [embed] });
       target.edit({ channel: afkChannel });
       return;
@@ -82,10 +87,18 @@ export const Banish: Command = {
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(banish);
 
     embed
-      .setDescription(`${member.user.tag} wants to banish ${target.user.tag} from the channel. Do you agree?`)
-      .setFields({ name: "Timeout", value: "Request will time out in 10 seconds" });
+      .setDescription(
+        `${member.user.tag} wants to banish ${target.user.tag} from the channel. Do you agree?`
+      )
+      .setFields({
+        name: "Timeout",
+        value: "Request will time out in 10 seconds",
+      });
 
-    const response = await interaction.reply({ embeds: [embed], components: [row] });
+    const response = await interaction.reply({
+      embeds: [embed],
+      components: [row],
+    });
 
     try {
       while (true) {
@@ -125,6 +138,7 @@ export const Banish: Command = {
           await confirmation.update({});
         }
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       embed
         .setDescription(null)

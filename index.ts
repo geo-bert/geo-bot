@@ -19,7 +19,10 @@ import { notifyAdmins } from "./src/message-admins.js";
 dotenv.config();
 
 process.on("unhandledRejection", (reason, promise) => {
-  notifyAdmins(client.users.cache, `Unhandled Rejection at: ${JSON.stringify(promise, null, 2)} reason: ${JSON.stringify(reason, null, 2)}`);
+  notifyAdmins(
+    client.users.cache,
+    `Unhandled Rejection at: ${JSON.stringify(promise, null, 2)} reason: ${JSON.stringify(reason, null, 2)}`
+  );
 });
 
 const client = new Client({
@@ -30,12 +33,12 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildPresences,
-    GatewayIntentBits.DirectMessages
+    GatewayIntentBits.DirectMessages,
   ],
 });
 
 client.once(Events.ClientReady, async () => {
-  client?.user?.setActivity("Running version 2.5.2", {
+  client?.user?.setActivity("Running version 2.5.3", {
     type: ActivityType.Custom,
   });
   await client?.application?.commands.set(Commands);
@@ -73,7 +76,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
   const command = Commands.find((c) => c.name === interaction.commandName);
 
   if (!command) {
-    notifyAdmins(client.users.cache, `No command matching ${interaction.commandName} was found.`);
+    notifyAdmins(
+      client.users.cache,
+      `No command matching ${interaction.commandName} was found.`
+    );
     return;
   }
 

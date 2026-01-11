@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node --no-warnings=ExperimentalWarning --loader ts-node/esm index.ts",
-    "deploy-commands": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./deploy-commands.ts"
+    "deploy-commands": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./deploy-commands.ts",
+    "lint": "npx eslint"
   },
   "author": "Geobert",
   "license": "ISC",
@@ -17,16 +18,20 @@
     "dotenv": "^17.2.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@tsconfig/node16": "^16.1.4",
     "@types/body-parser": "^1.19.6",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
-    "eslint": "^9.32.0",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
+    "jiti": "^2.6.1",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.52.0"
   },
   "json": {
     "imports": {
