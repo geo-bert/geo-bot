@@ -13,7 +13,6 @@ import updateChannel from "./src/dynamic-channels.js";
 import onLeave from "./src/leave-message.js";
 import autorole from "./src/autorole.js";
 import * as dotenv from "dotenv";
-import voiceStatus from "./src/voice-status.js";
 import { notifyAdmins } from "./src/message-admins.js";
 
 dotenv.config();
@@ -38,7 +37,7 @@ const client = new Client({
 });
 
 client.once(Events.ClientReady, async () => {
-  client?.user?.setActivity("Running version 2.5.3", {
+  client?.user?.setActivity("Running version 2.6.0", {
     type: ActivityType.Custom,
   });
   await client?.application?.commands.set(Commands);
@@ -54,7 +53,6 @@ client.on(Events.MessageCreate, (msg) => checkForSuppression(msg));
 client.on(
   Events.VoiceStateUpdate,
   (oldState: VoiceState, newState: VoiceState) => {
-    voiceStatus(oldState, newState);
     updateChannel(oldState, newState);
   }
 );
